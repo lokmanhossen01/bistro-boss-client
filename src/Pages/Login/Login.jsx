@@ -1,11 +1,25 @@
  {/* React Simple Captcha step-01 */}
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate } from 'react-simple-captcha';
+import { AuthContext } from '../../providers/AuthProvider';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
+
+    // Login using email and password setup 
+    const {signIn} = useContext(AuthContext);
+
+    const navigate = useNavigate();
+    const location = useLocation()
+
+    const form = location.state?.form?.pathname || '/';
+
+ 
+
     {/* React Simple Captcha step-03 */}
-    const captchaRef = useRef(null)
+
     const [disabled, setDisabled] = useState(true)
 
     useEffect(() => {
@@ -18,13 +32,38 @@ const Login = () => {
         const email = form.email.value; 
         const password = form.password.value; 
         console.log(email, password)
+        signIn(email, password)
+            .then(result => {
+                const user = result.user; 
+                console.log(user)
+
+                Swal.fire({
+                    title: "User Login Successful.",
+                    showClass: {
+                      popup: `
+                        animate__animated
+                        animate__fadeInUp
+                        animate__faster
+                      `
+                    },
+                    hideClass: {
+                      popup: `
+                        animate__animated
+                        animate__fadeOutDown
+                        animate__faster
+                      `
+                    }
+                  });
+                  
+                  navigate(form, {replace: true})
+            })
     }
 
     {/* React Simple Captcha step-04 */}
-    const validateCaptcha = e => {
-        const value = captchaRef.current.value
+    const validateCaptcha = (e) => {
+        const value = e.target.value
         // console.log(value);
-        if (validateCaptcha(value)==true) {
+        if (validateCaptcha(value)) {
             setDisabled(false)
         } else {
             setDisabled(true)
@@ -63,15 +102,16 @@ const Login = () => {
                     {/* React Simple Captcha step-02 */}
                     <LoadCanvasTemplate />
                 </label>
-                <input ref={captchaRef} type="text" name="captcha" placeholder="Type the text above" className="input input-bordered" required />
-                <button onClick={validateCaptcha} className="btn btn-outline btn-xs mt-2">Validate</button>
+                <input  onBlur={validateCaptcha} type="text" name="captcha" placeholder="Type the text above" className="input input-bordered" required />
+                {/* <button className="btn btn-outline btn-xs mt-2">Validate</button> */}
               </div>
 
 
-              <div className="form-control mt-6">
-                <input disabled={disabled} type="submit" value="Login" className="btn btn-primary"/>
+              <div disabled={disabled} className="form-control mt-6">
+                <input  type="submit" value="Login" className="btn btn-primary"/>
               </div>
             </form>
+            <p className=' text-center'><small>New here? <Link className=' text-orange-500' to="/signup">Create an account</Link></small></p>
           </div>
         </div>
       </div>
