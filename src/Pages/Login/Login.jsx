@@ -14,8 +14,9 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation()
 
-    const form = location.state?.form?.pathname || '/';
 
+    const form = location.state?.form?.pathname || '/';
+    console.log('state in the location login page', location.state)
  
 
     {/* React Simple Captcha step-03 */}
@@ -107,8 +108,9 @@ const Login = () => {
               </div>
 
 
-              <div disabled={disabled} className="form-control mt-6">
-                <input  type="submit" value="Login" className="btn btn-primary"/>
+              <div  className="form-control mt-6">
+                {/* TODO: apply disabled for recaptcha */}
+                <input disabled={false}  type="submit" value="Login" className="btn btn-primary"/>
               </div>
             </form>
             <p className=' text-center'><small>New here? <Link className=' text-orange-500' to="/signup">Create an account</Link></small></p>
