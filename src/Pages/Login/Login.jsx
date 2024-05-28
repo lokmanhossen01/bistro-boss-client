@@ -4,6 +4,7 @@ import { loadCaptchaEnginge, LoadCanvasTemplate } from 'react-simple-captcha';
 import { AuthContext } from '../../providers/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const Login = () => {
 
@@ -114,8 +115,13 @@ const Login = () => {
               </div>
             </form>
             <p className=' text-center'><small>New here? <Link className=' text-orange-500' to="/signup">Create an account</Link></small></p>
+
+          <div className="divider"></div>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
+
+        
       </div>
     )
 }
